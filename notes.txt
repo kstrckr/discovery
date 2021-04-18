@@ -1,0 +1,1 @@
+from %TEMP% - `openocd -s C:\share\scripts -f interface/stlink.cfg -f target/stm32f3x.cfg

@@ -5,33 +5,24 @@
 use volatile::Volatile;
 use aux5::{Delay, DelayMs, LedArray, OutputSwitch, entry};
 
-fn tic(leds: &mut LedArray, delay: &mut Delay) {
-
-    let interval: u16 = 50;
-    let overlap: u16 = 25;
-
+fn clean_tics(tic_ms: u16, leds: &mut LedArray, delay: &mut Delay) {
     for i in 0..8 {
-        leds[i].on().ok();
-        delay.delay_ms(interval);
-        if i == 7 {
-            leds[0].on().ok();
-        } else {
-            leds[i+1].on().ok();
-        }
-        delay.delay_ms(overlap);
-        leds[i].off().ok();
+        let body = i;
+        let head = if i < 7 { i + 1 } else { 0 };
+        let tail = if i > 0 { i - 1 } else { 7 };
+        // leds[body].on().ok();
+        delay.delay_ms(tic_ms);
+        leds[head].on().ok();
+        leds[tail].off().ok();
     }
 }
 
 #[entry]
 fn main() -> ! {
     let (mut delay, mut leds): (Delay, LedArray) = aux5::init();
-
-    let mut half_period = 500_u16;
-    let v_half_period = Volatile::new(&mut half_period);
-
+    let tic = 50_u16;
     loop {
-        tic(&mut leds, &mut delay);
+        clean_tics(tic, &mut leds, &mut delay);
     }
 }
 
