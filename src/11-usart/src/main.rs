@@ -10,7 +10,8 @@ fn main() -> ! {
     let (usart1, mono_timer, itm) = aux11::init();
 
     // Send a single character
-    usart1.tdr.write(|w| w.tdr().bits(u16::from(b'X')));
 
-    loop {}
+    loop {
+    usart1.tdr.write(|w| w.tdr().bits(u16::from(b'X')));
+    }
 }
