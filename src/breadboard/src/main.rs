@@ -47,17 +47,27 @@ fn main() -> ! {
 
 
     // aux999::bkpt();
-
+    let mut ramping_mut = 1;
+    let mut up = true;
+    let step = 10;
     loop {
         // Turn on all the GPIO pins you need
+        if ramping_mut == 101 {
+            // ramping_mut = 1;
+            up = false;
+        };
+        if ramping_mut == 1 { up = true }
+
         gpioa.odr.write(|w| {
             w.odr1().bit(true)
         });
-        delay(tim6, ms);
+        delay(tim6, ramping_mut);
 
         gpioa.odr.write(|w| {
             w.odr1().bit(false)
         });
-        delay(tim6, ms);
+        delay(tim6, ramping_mut);
+        if up { ramping_mut = ramping_mut + step; }
+        else { ramping_mut = ramping_mut - step;}
     }
 }
