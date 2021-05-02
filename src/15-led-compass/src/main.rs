@@ -13,7 +13,6 @@ fn main() -> ! {
 
     loop {
         // iprintln!(&mut itm.stim[0], "{:?}", lsm303dlhc.mag().unwrap());
-        // delay.delay_ms(1_000_u16);
         if sensor.accel_status().unwrap().xyz_new_data {
             let data = sensor.accel_data().unwrap();
 
@@ -21,5 +20,8 @@ fn main() -> ! {
             // iprintln!("Acceleration: x {:?} y {:?} z {:?}", data.x, data.y, data.z);
             iprintln!(&mut itm.stim[0], "{} - {} - {}", data.x, data.y, data.z);
         }
+
+        delay.delay_ms(1_000_u16);
+
     }
 }

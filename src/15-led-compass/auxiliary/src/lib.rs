@@ -15,18 +15,15 @@ use f3::{
     hal::{i2c::I2c, prelude::*, stm32f30x}
 };
 
-use f3::hal::gpio::gpioa::{PA5, PA6, PA7};
 use f3::hal::gpio::gpiob::{PB6, PB7};
-use f3::hal::gpio::gpioe::PE3;
-use f3::hal::gpio::{AF4, AF5, Output, PushPull};
-use f3::hal::spi::Spi;
-use f3::hal::stm32f30x::{I2C1, SPI1};
+use f3::hal::gpio::{ AF4 };
+use f3::hal::stm32f30x::{ I2C1 };
 
 
 pub use lsm303agr::{AccelOutputDataRate, Lsm303agr};
-// lsm303agr::interface::I2cInterface
-// I2c<I2C1, (PB6<AF4>, PB7<AF4>)
-pub fn init() -> (Leds, Delay, Lsm303agr<lsm303agr::interface::I2cInterface<I2c<I2C1, (PB6<AF4>, PB7<AF4>)>>, lsm303agr::mode::MagOneShot>, ITM) {
+pub use lsm303agr::interface::I2cInterface;
+
+pub fn init() -> (Leds, Delay, Lsm303agr<I2cInterface<I2c<I2C1, (PB6<AF4>, PB7<AF4>)>>, lsm303agr::mode::MagOneShot>, ITM) {
     let cp = cortex_m::Peripherals::take().unwrap();
     let dp = stm32f30x::Peripherals::take().unwrap();
 
